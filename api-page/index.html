@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevX API</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08060f; --bg2:#0d0a1a; --panel:#120c24; --panel2:#170f2e;
+  --neon:#a855f7; --neon2:#7c3aed; --neon-pink:#ec4899; --neon-cyan:#22d3ee;
+  --text:#e9e3ff; --text-dim:#9d8fc7; --text-mute:#6b5d94;
+  --border:rgba(168,85,247,.35); --border-soft:rgba(168,85,247,.18);
+  --glow:rgba(168,85,247,.45); --success:#22e5a0; --danger:#ff4d6d;
+  --r:14px; --rl:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:radial-gradient(ellipse at top,#150a2c 0%,var(--bg) 55%);
+  color:var(--text); font-family:'Rajdhani',sans-serif; min-height:100vh; overflow-x:hidden;
+}
+h1,h2,h3,.brand,.neon-font{font-family:'Orbitron',sans-serif}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--neon2);border-radius:6px}
+::-webkit-scrollbar-track{background:transparent}
+
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(168,85,247,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,.06) 1px,transparent 1px);
+  background-size:42px 42px; mask-image:radial-gradient(ellipse at 50% 0%,#000 40%,transparent 80%);}
+
+.topbar{
+  position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between;
+  padding:12px 18px; background:linear-gradient(90deg,#1a0a33,#0d0620 60%);
+  border-bottom:1px solid var(--border); backdrop-filter:blur(10px);
+}
+.topbar.alt{background:linear-gradient(90deg,#a020f0,#6d28d9)}
+.brand-mini{display:flex;align-items:center;gap:10px}
+.brand-mini-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--neon),var(--neon-cyan));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;box-shadow:0 0 16px var(--glow)}
+.brand-title{font-weight:700;font-size:.98rem;letter-spacing:.5px;color:var(--text)}
+.topbar-icons{display:flex;gap:16px;align-items:center;color:var(--text)}
+.topbar-icons button{background:none;border:none;color:inherit;font-size:1.1rem;cursor:pointer;transition:.2s;position:relative}
+.topbar-icons button:hover{color:var(--neon-cyan);transform:scale(1.08)}
+
+.layout{position:relative;z-index:1;display:flex;min-height:100vh}
+.main{flex:1;padding:18px;max-width:780px;margin:0 auto;width:100%}
+
+.menu-overlay{position:fixed;inset:0;background:rgba(5,2,12,.6);backdrop-filter:blur(2px);z-index:90;opacity:0;visibility:hidden;transition:.3s}
+.menu-overlay.open{opacity:1;visibility:visible}
+.side-menu{
+  position:fixed; top:0; right:0; bottom:0; width:230px; z-index:95;
+  background:linear-gradient(180deg,#120a26,#0a0617); border-left:1px solid var(--border);
+  transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1); overflow-y:auto; padding-bottom:24px;
+}
+.side-menu.open{transform:translateX(0)}
+.side-menu-head{padding:18px 16px 10px;font-size:.78rem;letter-spacing:1px;color:var(--text-dim);display:flex;align-items:center;gap:8px}
+.side-menu-sub{padding:8px 16px;font-size:.72rem;color:var(--neon-cyan);text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:8px;margin-top:4px}
+.side-menu-item{
+  display:flex;align-items:center;gap:10px;margin:6px 12px;padding:11px 14px;border-radius:10px;
+  background:var(--panel); border:1px solid var(--border-soft); color:var(--text); font-size:.86rem; font-weight:600;
+  cursor:pointer; transition:.2s; text-decoration:none;
+}
+.side-menu-item:hover,.side-menu-item.active{border-color:var(--neon);box-shadow:0 0 14px var(--glow);color:#fff;background:var(--panel2)}
+.side-menu-item i.lead{color:var(--neon-cyan);width:16px;text-align:center}
+.side-menu-item .count{margin-left:auto;font-size:.7rem;color:var(--text-mute)}
+.side-menu-foot{text-align:center;font-size:.7rem;color:var(--text-mute);margin-top:14px}
+
+.dash-title{display:flex;align-items:center;justify-content:center;gap:10px;margin:18px 0 16px;font-size:1.15rem;font-weight:700;color:#fff;text-shadow:0 0 14px var(--glow)}
+.dash-title i{color:var(--neon-cyan)}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+.stat-card{
+  background:var(--panel); border:1px solid var(--border); border-radius:var(--r); padding:14px 10px; text-align:center;
+  box-shadow:0 0 0 1px rgba(168,85,247,.05) inset, 0 8px 24px rgba(124,58,237,.12); position:relative; overflow:hidden;
+}
+.stat-card::after{content:'';position:absolute;inset:0;background:radial-gradient(70px 40px at 50% 0%,var(--glow),transparent 70%);opacity:.5}
+.stat-card i.ic{font-size:1.3rem;color:var(--neon-cyan);margin-bottom:8px;display:block;filter:drop-shadow(0 0 6px var(--neon-cyan))}
+.stat-card .lbl{font-size:.68rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.stat-card .val{font-size:1.5rem;font-weight:800;font-family:'Orbitron',sans-serif;color:#fff;text-shadow:0 0 10px var(--glow)}
+.stat-card.wide{grid-column:span 3;display:flex;align-items:center;gap:14px;text-align:left;padding:16px}
+.stat-card.wide i.ic{margin:0;font-size:1.6rem;color:#facc15;filter:drop-shadow(0 0 6px #facc15)}
+.stat-card.wide .sub{font-size:.7rem;color:var(--text-mute);margin-top:2px}
+
+.dist-wrap{margin-bottom:22px}
+.dist-row{background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--r);padding:12px 14px;margin-bottom:10px;transition:.2s;cursor:pointer}
+.dist-row:hover{border-color:var(--neon);box-shadow:0 0 14px var(--glow)}
+.dist-top{display:flex;justify-content:space-between;font-size:.85rem;font-weight:600;margin-bottom:8px;color:var(--text)}
+.dist-top span.pct{color:var(--text-mute);font-weight:500;font-size:.78rem}
+.dist-bar{height:7px;background:#1a1130;border-radius:6px;overflow:hidden}
+.dist-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--neon2),var(--neon),var(--neon-pink));
+  box-shadow:0 0 10px var(--glow); transition:width 1s cubic-bezier(.4,0,.2,1);}
+
+.owner-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--rl);padding:22px 16px;text-align:center;margin-bottom:22px;box-shadow:0 0 30px rgba(124,58,237,.1) inset}
+.owner-avatar{width:62px;height:62px;border-radius:50%;object-fit:cover;border:2px solid var(--neon);box-shadow:0 0 18px var(--glow);margin-bottom:10px}
+.owner-name{font-weight:700;color:#fff;margin-bottom:14px;font-size:1.05rem}
+.owner-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.owner-tag{display:flex;align-items:center;gap:6px;padding:8px 13px;border:1px solid var(--border);border-radius:20px;font-size:.78rem;color:var(--text-dim);background:var(--panel2);transition:.2s}
+.owner-tag:hover{color:#fff;border-color:var(--neon);box-shadow:0 0 10px var(--glow)}
+.owner-tag i{color:var(--neon-cyan)}
+
+.foot-brand{text-align:center;padding:30px 0 10px}
+.foot-logo{width:120px;height:120px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle,#1a0f33,#0a0617); box-shadow:0 0 40px var(--glow),0 0 0 2px var(--border); font-size:2.6rem;color:#fb923c}
+.foot-name{font-weight:800;font-size:1.25rem;color:#fff;letter-spacing:1px;text-shadow:0 0 16px var(--glow)}
+
+.fab{position:fixed;bottom:20px;right:18px;width:50px;height:50px;border-radius:50%;z-index:60;
+  background:radial-gradient(circle,#3a0f4d,#1a0826);border:1px solid var(--neon);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 20px var(--glow); cursor:pointer; color:#fb923c; font-size:1.2rem; animation:floaty 3s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+.sections-page{display:none}
+.sections-page.active{display:block}
+.dash-page.hidden{display:none}
+.sec-group{margin-bottom:20px}
+.sec-group-title{font-size:.92rem;font-weight:700;color:var(--neon-cyan);margin-bottom:8px;padding-left:2px;text-shadow:0 0 8px rgba(34,211,238,.4)}
+.sec-table-wrap{background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--r);overflow-x:auto}
+table.sec-table{width:100%;border-collapse:collapse;min-width:560px;font-size:.82rem}
+.sec-table thead th{
+  text-align:left;padding:9px 12px;background:var(--panel2);color:var(--text-dim);font-weight:600;font-size:.72rem;
+  text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border-soft);white-space:nowrap;
+}
+.sec-table tbody td{padding:10px 12px;border-bottom:1px solid rgba(168,85,247,.08);color:var(--text);white-space:nowrap}
+.sec-table tbody tr:last-child td{border-bottom:none}
+.sec-table tbody tr:hover{background:rgba(168,85,247,.06)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:14px;font-size:.72rem;font-weight:700;cursor:pointer;border:none;transition:.2s}
+.pill-method{background:linear-gradient(135deg,var(--neon2),var(--neon));color:#fff}
+.pill-open{background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff}
+.pill-test{background:linear-gradient(135deg,#7c3aed,#c026d3);color:#fff}
+.pill:hover{filter:brightness(1.15);box-shadow:0 0 10px var(--glow);transform:translateY(-1px)}
+.status-active{color:var(--success);font-weight:700;font-size:.78rem;display:flex;align-items:center;gap:5px}
+.status-active::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success)}
+
+.search-wrap{margin-bottom:16px;position:relative}
+.search-wrap input{width:100%;padding:11px 16px 11px 40px;background:var(--panel);border:1px solid var(--border);border-radius:30px;color:var(--text);font-family:inherit;font-size:.88rem}
+.search-wrap input:focus{outline:none;border-color:var(--neon);box-shadow:0 0 14px var(--glow)}
+.search-wrap i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--text-mute)}
+
+.back-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.back-btn{background:var(--panel);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:10px;font-size:.82rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s}
+.back-btn:hover{border-color:var(--neon);box-shadow:0 0 10px var(--glow);color:#fff}
+
+.loader{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .4s,visibility .4s}
+.loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-ring{width:46px;height:46px;border:3px solid rgba(168,85,247,.2);border-top-color:var(--neon);border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader span{color:var(--text-dim);font-size:.78rem;letter-spacing:2px;text-transform:uppercase}
+.empty-state{text-align:center;padding:50px 16px;color:var(--text-dim)}
+.empty-state i{font-size:2.2rem;color:var(--neon2);margin-bottom:12px;display:block}
+
+.toast-wrap{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;flex-direction:column;gap:8px;width:90%;max-width:340px}
+.toast{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;
+  box-shadow:0 8px 26px rgba(0,0,0,.4); transform:translateY(-20px);opacity:0;transition:.3s; font-size:.85rem}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.err{border-color:var(--danger)}
+.toast.err i{color:var(--danger)}
+.toast.ok i{color:var(--success)}
+
+.modal-ov{position:fixed;inset:0;background:rgba(5,2,12,.75);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;visibility:hidden;transition:.3s}
+.modal-ov.active{opacity:1;visibility:visible}
+.modal-box{background:var(--panel);border:1px solid var(--border);border-radius:18px;max-width:480px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 40px var(--glow);transform:scale(.94);transition:.3s}
+.modal-ov.active .modal-box{transform:scale(1)}
+.modal-head{padding:16px 18px;border-bottom:1px solid var(--border-soft);display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.modal-head h3{font-size:1rem;color:#fff}
+.modal-head p{font-size:.75rem;color:var(--text-mute);margin-top:3px}
+.modal-close{background:var(--panel2);border:1px solid var(--border-soft);color:var(--text);width:30px;height:30px;border-radius:9px;cursor:pointer;flex-shrink:0}
+.modal-close:hover{border-color:var(--danger);color:var(--danger)}
+.modal-bd{padding:16px 18px;overflow-y:auto}
+.mini-label{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-mute);margin-bottom:6px}
+.url-box{background:#0a0617;border:1px solid var(--border-soft);border-radius:10px;padding:10px 12px;font-size:.75rem;color:var(--neon-cyan);word-break:break-all;margin-bottom:14px;font-family:monospace}
+.pfield{margin-bottom:10px}
+.pfield label{font-size:.78rem;font-weight:600;display:block;margin-bottom:4px;color:var(--text)}
+.pfield input{width:100%;padding:9px 12px;background:#0a0617;border:1px solid var(--border-soft);border-radius:8px;color:var(--text);font-family:inherit;font-size:.85rem}
+.pfield input:focus{outline:none;border-color:var(--neon)}
+.pfield input.err{border-color:var(--danger)}
+.resp-box{background:#0a0617;border:1px solid var(--border-soft);border-radius:10px;padding:12px;max-height:240px;overflow-y:auto;font-size:.75rem;font-family:monospace;color:var(--text-dim);white-space:pre-wrap;word-break:break-all}
+.resp-status{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;font-size:.78rem;font-weight:700;margin-bottom:10px}
+.s-ok{background:rgba(34,229,160,.15);color:var(--success)}
+.s-err{background:rgba(255,77,109,.15);color:var(--danger)}
+.s-load{background:rgba(168,85,247,.15);color:var(--neon)}
+.modal-foot{padding:14px 18px;border-top:1px solid var(--border-soft);display:flex;gap:10px}
+.btn-go{flex:1;padding:10px;border-radius:10px;border:none;font-weight:700;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.btn-go.primary{background:linear-gradient(135deg,var(--neon2),var(--neon));color:#fff}
+.btn-go.primary:hover{box-shadow:0 0 14px var(--glow)}
+.btn-go.sec{background:var(--panel2);color:var(--text);border:1px solid var(--border-soft)}
+.btn-go.sec:hover{border-color:var(--neon)}
+
+@media(min-width:860px){
+  .layout{justify-content:center}
+  .main{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="loader" id="loader"><div class="loader-ring"></div><span>Loading API…</span></div>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<div class="topbar" id="topbar">
+  <div class="brand-mini">
+    <div class="brand-mini-logo"><i class="fas fa-bolt"></i></div>
+    <div class="brand-title" id="pageTitle">DevX API</div>
+  </div>
+  <div class="topbar-icons">
+    <button onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+  </div>
+</div>
+
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
+<aside class="side-menu" id="sideMenu">
+  <div class="side-menu-head"><i class="fas fa-bars"></i> Menu Options</div>
+  <div class="side-menu-item active" onclick="showDashboard()"><i class="fas fa-house lead"></i> Dashboard</div>
+  <div class="side-menu-sub"><i class="fas fa-list"></i> Sections Api</div>
+  <div id="menuSections"></div>
+  <div class="side-menu-sub"><i class="fas fa-code-compare"></i> More</div>
+  <div class="side-menu-item" onclick="showAllSections()"><i class="fas fa-grip lead"></i> All Apis</div>
+  <div class="side-menu-foot">© <span id="yr"></span> DevX API</div>
+</aside>
+
+<div class="layout">
+<main class="main">
+
+  <div class="dash-page" id="dashPage">
+    <div class="dash-title"><i class="fas fa-chart-pie"></i> API Statistics Dashboard</div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><i class="fas fa-diagram-project ic"></i><div class="lbl">Total Endpoints</div><div class="val" id="statTotal">0</div></div>
+      <div class="stat-card"><i class="fas fa-shapes ic"></i><div class="lbl">Total Sections</div><div class="val" id="statSections">0</div></div>
+      <div class="stat-card wide" id="dominantCard">
+        <i class="fas fa-trophy ic"></i>
+        <div>
+          <div class="lbl">Dominant Section</div>
+          <div class="val" id="statDominant" style="font-size:1.2rem">-</div>
+          <div class="sub" id="statDominantSub">0 endpoints (0%)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-title"><i class="fas fa-chart-simple"></i> Sections Distribution</div>
+    <div class="dist-wrap" id="distWrap"></div>
+
+    <div class="owner-card">
+      <img class="owner-avatar" src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=emam" alt="owner">
+      <div class="owner-name">DevX </div>
+      <div class="owner-tags">
+        <a class="owner-tag" href="tel:+201208267668"><i class="fas fa-phone"></i> +20 120 826 7668</a>
+        <a class="owner-tag" href="tel:+201208267668"><i class="fas fa-mobile"></i> +20 120 826 7668</a>
+        <span class="owner-tag"><i class="fas fa-book"></i> Read Manhwa</span>
+        <span class="owner-tag"><i class="fas fa-book-open"></i> Read Novels</span>
+        <span class="owner-tag"><i class="fas fa-tv"></i> Watch Anime</span>
+        <span class="owner-tag"><i class="fas fa-bed"></i> Sleep</span>
+        <span class="owner-tag"><i class="fas fa-code"></i> Coding</span>
+      </div>
+    </div>
+
+    <div class="foot-brand">
+      <div class="foot-logo"><i class="fas fa-fire"></i></div>
+      <div class="foot-name">⬥ DevX API</div>
+    </div>
+  </div>
+
+  <div class="sections-page" id="sectionsPage">
+    <div class="back-row">
+      <button class="back-btn" onclick="showDashboard()"><i class="fas fa-arrow-left"></i> Dashboard</button>
+    </div>
+    <div class="search-wrap">
+      <i class="fas fa-magnifying-glass"></i>
+      <input id="secSearch" placeholder="Search endpoints..." oninput="filterSections(this.value)">
+    </div>
+    <div id="sectionsContent"></div>
+    <div class="empty-state" id="emptyState" style="display:none">
+      <i class="fas fa-magnifying-glass-minus"></i>
+      No endpoints found for this search.
+    </div>
+  </div>
+
+</main>
+</div>
+
+<button class="fab" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-fire"></i></button>
+
+<div class="modal-ov" id="apiModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><h3 id="mTitle">Endpoint</h3><p id="mDesc">description</p></div>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-bd">
+      <div class="mini-label">Request URL</div>
+      <div class="url-box" id="mUrl"></div>
+      <div id="mParamsSec" style="display:none">
+        <div class="mini-label">Parameters</div>
+        <div id="mParams"></div>
+      </div>
+      <div id="mRespSec" style="display:none">
+        <div class="mini-label">Response</div>
+        <div class="resp-status s-load" id="mStatus"><i class="fas fa-circle-notch fa-spin"></i> Ready</div>
+        <div class="resp-box" id="mBody">Click Execute to see the response</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-go primary" id="btnExec" onclick="execApi()"><i class="fas fa-play"></i> Execute</button>
+      <button class="btn-go sec" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+const BASEURL = window.location.origin;
+let DATA = null;
+let currentUrl = '', currentParams = {};
+
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+const ICONS = {tools:'fa-screwdriver-wrench',download:'fa-download',search:'fa-magnifying-glass',ai:'fa-robot',voiceai:'fa-microphone',islamic:'fa-mosque',image:'fa-image',games:'fa-gamepad',default:'fa-cube'};
+function icon(name){const k=(name||'').toLowerCase();return ICONS[k]||ICONS.default;}
+
+async function init(){
+  try{
+    const res = await fetch(BASEURL+'/src/settings.json');
+    if(!res.ok) throw new Error('http '+res.status);
+    DATA = await res.json();
+    render();
+  }catch(e){
+    toast('Failed to load API data','err');
+    document.getElementById('dashPage').innerHTML = '<div class="empty-state"><i class="fas fa-triangle-exclamation"></i>Could not load API data. Please retry later.</div>';
+  }finally{
+    setTimeout(()=>document.getElementById('loader').classList.add('hidden'),400);
+  }
+}
+
+function render(){
+  const cats = (DATA.categories||[]).map(c=>({...c, items:c.items||[]}));
+  const total = cats.reduce((a,c)=>a+c.items.length,0);
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statSections').textContent = cats.length;
+
+  const sorted = [...cats].sort((a,b)=>b.items.length-a.items.length);
+  const top = sorted[0];
+  if(top){
+    document.getElementById('statDominant').textContent = top.name;
+    const pct = total ? Math.round(top.items.length/total*100) : 0;
+    document.getElementById('statDominantSub').textContent = `${top.items.length} endpoints (${pct}%)`;
+  }
+
+  const distWrap = document.getElementById('distWrap');
+  distWrap.innerHTML = sorted.map(c=>{
+    const pct = total ? Math.round(c.items.length/total*100) : 0;
+    return `<div class="dist-row" onclick="openSection('${esc(c.name)}')">
+      <div class="dist-top"><span>${esc(c.name)}</span><span class="pct">${c.items.length} endpoints</span></div>
+      <div class="dist-bar"><div class="dist-fill" style="width:0%" data-w="${pct}"></div></div>
+      <div style="text-align:right;font-size:.7rem;color:var(--text-mute);margin-top:4px">${pct}%</div>
+    </div>`;
+  }).join('');
+  requestAnimationFrame(()=>{
+    setTimeout(()=>document.querySelectorAll('.dist-fill').forEach(el=>el.style.width=el.dataset.w+'%'),80);
+  });
+
+  const menu = document.getElementById('menuSections');
+  menu.innerHTML = cats.map(c=>`<div class="side-menu-item" onclick="openSection('${esc(c.name)}')"><i class="fas ${icon(c.name)} lead"></i> ${esc(c.name)} <span class="count">(${c.items.length})</span></div>`).join('');
+}
+
+function toggleMenu(){
+  document.getElementById('sideMenu').classList.toggle('open');
+  document.getElementById('menuOverlay').classList.toggle('open');
+}
+
+function showDashboard(){
+  document.getElementById('dashPage').classList.remove('hidden');
+  document.getElementById('sectionsPage').classList.remove('active');
+  document.getElementById('pageTitle').textContent = 'DevX API';
+  document.getElementById('topbar').classList.remove('alt');
+  if(document.getElementById('sideMenu').classList.contains('open')) toggleMenu();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showAllSections(){ openSection(null); }
+
+function openSection(name){
+  document.getElementById('dashPage').classList.add('hidden');
+  document.getElementById('sectionsPage').classList.add('active');
+  document.getElementById('pageTitle').textContent = 'Sections DevX API';
+  document.getElementById('topbar').classList.add('alt');
+  if(document.getElementById('sideMenu').classList.contains('open')) toggleMenu();
+  document.getElementById('secSearch').value='';
+  renderSections(name);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderSections(filterName){
+  const cats = (DATA.categories||[]);
+  const html = [];
+  cats.forEach(cat=>{
+    if(filterName && cat.name !== filterName) return;
+    const items = (cat.items||[]).slice().sort((a,b)=>a.name.localeCompare(b.name));
+    items.forEach(item=>{
+      html.push(`
+      <div class="sec-group" data-name="${esc(item.name.toLowerCase())}" data-path="${esc((item.path||'').toLowerCase())}">
+        <div class="sec-group-title">${esc(cat.name)} | ${esc(item.name)}</div>
+        <div class="sec-table-wrap">
+          <table class="sec-table">
+            <thead><tr><th>#</th><th>Title</th><th>Method</th><th>Api</th><th>Website</th><th>Test</th><th>Status</th></tr></thead>
+            <tbody><tr>
+              <td>1</td>
+              <td>${esc(item.name)}</td>
+              <td>GET</td>
+              <td><button class="pill pill-method" onclick="goTo('${esc(item.path)}')">Go</button></td>
+              <td><button class="pill pill-open" onclick="goTo('${esc(item.path)}')">Open</button></td>
+              <td><button class="pill pill-test" onclick="openTry('${esc(item.path)}','${esc(item.name)}','${esc(item.desc||'')}','${esc(item.innerDesc||'')}')">Test</button></td>
+              <td><span class="status-active">Active</span></td>
+            </tr></tbody>
+          </table>
+        </div>
+      </div>`);
+    });
+  });
+  document.getElementById('sectionsContent').innerHTML = html.join('') || '';
+  document.getElementById('emptyState').style.display = html.length ? 'none' : 'flex';
+}
+
+function filterSections(term){
+  term = term.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll('.sec-group').forEach(g=>{
+    const match = !term || g.dataset.name.includes(term) || g.dataset.path.includes(term);
+    g.style.display = match ? '' : 'none';
+    if(match) visible++;
+  });
+  document.getElementById('emptyState').style.display = (visible===0) ? 'flex' : 'none';
+}
+
+function goTo(path){ window.open(BASEURL + path, '_blank'); }
+
+function openTry(path,name,desc,innerDesc){
+  currentUrl = BASEURL + path.split('?')[0];
+  currentParams = {};
+  document.getElementById('mTitle').textContent = name;
+  document.getElementById('mDesc').textContent = desc;
+  document.getElementById('mUrl').textContent = currentUrl;
+
+  const params = new URLSearchParams(path.split('?')[1]||'');
+  const has = params.toString().length>0;
+  document.getElementById('mParamsSec').style.display = has ? 'block':'none';
+  const box = document.getElementById('mParams');
+  box.innerHTML='';
+  if(has){
+    params.forEach((_,key)=>{
+      const f=document.createElement('div');
+      f.className='pfield';
+      f.innerHTML=`<label>${esc(key)}</label><input data-k="${esc(key)}" placeholder="Enter ${esc(key)}...">`;
+      f.querySelector('input').addEventListener('input',e=>{e.target.classList.remove('err');currentParams[key]=e.target.value.trim();});
+      box.appendChild(f);
+    });
+    if(innerDesc){
+      const d=document.createElement('div');
+      d.style.cssText='font-size:.78rem;color:var(--text-mute);margin-top:6px;line-height:1.6';
+      d.innerHTML=esc(innerDesc).replace(/\n/g,'<br>');
+      box.appendChild(d);
+    }
+  }
+  document.getElementById('mRespSec').style.display='none';
+  document.getElementById('mBody').textContent='Click Execute to see the response';
+  document.getElementById('mStatus').className='resp-status s-load';
+  document.getElementById('mStatus').innerHTML='<i class="fas fa-circle-notch fa-spin"></i> Ready';
+  document.getElementById('apiModal').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('apiModal').classList.remove('active');
+  document.body.style.overflow='';
+}
+async function execApi(){
+  const inputs=document.querySelectorAll('#mParams input');
+  let ok=true;
+  inputs.forEach(i=>{if(!i.value.trim()){ok=false;i.classList.add('err');}});
+  if(!ok){toast('Please fill all required parameters','err');return;}
+
+  const params=new URLSearchParams(currentParams);
+  const url=currentUrl+(params.toString()?'?'+params.toString():'');
+  const statusEl=document.getElementById('mStatus');
+  const bodyEl=document.getElementById('mBody');
+  document.getElementById('mRespSec').style.display='block';
+  statusEl.className='resp-status s-load';
+  statusEl.innerHTML='<i class="fas fa-circle-notch fa-spin"></i> Loading...';
+  bodyEl.textContent='Loading...';
+  const btn=document.getElementById('btnExec');
+  btn.disabled=true;
+  try{
+    const r=await fetch(url);
+    if(r.ok){statusEl.className='resp-status s-ok';statusEl.innerHTML=`<i class="fas fa-check-circle"></i> ${r.status} ${r.statusText}`;}
+    else{statusEl.className='resp-status s-err';statusEl.innerHTML=`<i class="fas fa-times-circle"></i> ${r.status} ${r.statusText}`;}
+    const ct=r.headers.get('Content-Type')||'';
+    if(ct.includes('application/json')){
+      const d=await r.json();
+      bodyEl.textContent=JSON.stringify(d,null,2);
+    }else if(ct.startsWith('image/')){
+      const b=await r.blob();const rd=new FileReader();
+      rd.onload=()=>bodyEl.innerHTML=`<img src="${rd.result}" style="max-width:100%;border-radius:8px">`;
+      rd.readAsDataURL(b);
+    }else if(ct.startsWith('text/')){
+      bodyEl.textContent=await r.text();
+    }else{
+      bodyEl.textContent='Preview not available for this content type.';
+    }
+  }catch(e){
+    statusEl.className='resp-status s-err';
+    statusEl.innerHTML='<i class="fas fa-times-circle"></i> Error';
+    bodyEl.textContent='Error: '+e.message;
+  }finally{btn.disabled=false;}
+}
+
+function toast(msg,type='ok'){
+  const wrap=document.getElementById('toastWrap');
+  const t=document.createElement('div');
+  t.className='toast '+(type==='err'?'err':'ok');
+  t.innerHTML=`<i class="fas ${type==='err'?'fa-circle-exclamation':'fa-circle-check'}"></i><span>${esc(msg)}</span>`;
+  wrap.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},2800);
+}
+
+document.getElementById('apiModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+{
+  "name": "Terbo Api's",
+  "version": "v2",
+  "description": "Simple rest api by Terbo Spam.",
+  "header": {
+    "status": "Online!",
+    "imageSrc": [
+      "https://files.catbox.moe/t45g82.jpeg"
+    ],
+    "imageSize": {
+      "mobile": "50%",
+      "tablet": "40%",
+      "desktop": "40%"
+    }
+  },
+  "apiSettings": {
+    "creator": "TERBO-SPAM"
+  },
+  "links": [
+    {
+      "name": "Source Code",
+      "url": "https://whatsapp.com/channel/0029VbB89FX9sBIFviBQ5J15"
+    },
+    {
+      "name": "Contact Me",
+      "url": "https://wa.me/201034526368"
+    }
+  ],
+  "categories": [
+    {
+      "name": "AI",
+      "items": [ 
+      {
+  "name": "CHAT GPT ",
+  "desc": "Gpt turbo ",
+  "path": "/api/gpt?text="
+      },
+      {
+  "name": "TTS ",
+  "desc": "تحويل النص إلى صوت الاصوات المتاحه : رابر و يوكي و غوكو و نامي",
+  "path": "/api/tts?prompt=&voice=غوكو"
+      },
+            {
+  "name": "Masry ",
+  "desc": "مصري ذكاء اصطناعي يعمل بلهجه مصريه",
+  "path": "/api/masry?question="
+      },
+                  {
+  "name": "Img Gen ",
+  "desc": "انشاء صور بالذكاء الاصطناعي",
+  "path": "/api/ai-image?prompt="
+      },
+        {
+  "name": "Simsim ",
+  "desc": "اتكلم مع سمسم AI",
+  "path": "/api/simsim?question="
+        }
+      ]
+    },
+    {
+      "name": "Downloader",
+      "items": [
+        {
+          "name": "Ytmp3 ",
+          "desc": "تحميل يوتيوب بصيغه mp3",
+          "path": "/api/ytmp3?url="
+        },
+        {
+          "name": "Ytmp4 ",
+          "desc": "تحميل يوتيوب بصيغه mp4",
+          "path": "/api/ytconvert/mp4?url="
+        },
+                {
+          "name": "Play ",
+          "desc": "تحميل يوتيوب بالكلمه",
+          "path": "/api/play?q="
+        },
+                {
+          "name": "Facebook ",
+          "desc": "تحميل فيديوهات فيسبوك",
+          "path": "/api/facebook?url="
+        },
+        {
+          "name": "SoundCloud ",
+          "desc": "تحميل اغاني من ساوند كلاود",
+          "path": "/download/soundcloud?url="
+        },
+        {
+          "name": "Spotify ",
+          "desc": "تحميل مباشر من سبوتيفاي",
+          "path": "/api/s/spotify/download?url="
+        },
+        {
+          "name": "Pinterest DL ",
+          "desc": "تحميل بنتريست بصيغه vid/img",
+          "path": "/api/pindl?url="
+        },
+        {
+          "name": "Apk ",
+          "desc": "تحميل تطبيقات",
+          "path": "/api/apk?query="
+        },
+        {
+  "name": "Instagram Downloader ",
+  "desc": "تحميل انستا » posts, reels, photos",
+          "path": "/api/fastigdl?url="
+        },
+        {
+  "name": "Instagramdl V2 ",
+  "desc": "تحميل انستا V2",
+          "path": "/api/instav2?url="
+        },
+        {
+          "name": "TikTok MP4 ",
+          "desc": "تحميل فيديوهات تيك توك بدون علامه مائيه",
+          "path": "/api/tiktok?url="
+        },
+        {
+          "name": "TikTok V2 ",
+          "desc": "تحميل بديل",
+          "path": "/api/tikv2?url="
+        },
+        {
+          "name": "TikTok MP3 ",
+          "desc": "استخراج اصوات تيك توك و تحميل",
+          "path": "/api/tiktok-mp3?url="
+        }
+      ]
+    },
+    {
+  "name": "Canvas",
+  "items": [
+    {
+      "name": " Welcome V1 ",
+      "desc": "صورة ترحيب كاملة",
+      "path": "/api/canvas/welcomev1?username=&guildName=&memberCount=&guildIcon=&avatar=&background=&quality=100"
+    },
+    {
+      "name": " Welcome V2 ",
+      "desc": "ترحيب ستايل مختلف",
+      "path": "/api/canvas/welcomev2?username=&guildName=&memberCount=&avatar=&background="
+    },
+    {
+      "name": " Welcome V3 ",
+      "desc": "ترحيب بسيط",
+      "path": "/api/canvas/welcomev3?username=&avatar="
+    },
+    {
+      "name": " Welcome V4 ",
+      "desc": "ترحيب Canvafy",
+      "path": "/api/canvas/welcomev4?avatar=&background=&description="
+    },
+    {
+      "name": " Welcome V5 ",
+      "desc": "ترحيب احترافي",
+      "path": "/api/canvas/welcomev5?username=&guildName=&memberCount=&avatar=&background=&quality=100"
+    },
+
+    {
+      "name": "Goodbye ",
+      "desc": "صورة خروج عضو",
+      "path": "/api/canvas/goodbye?username=&avatar=&background="
+    },
+    {
+      "name": "Profile ",
+      "desc": "كارت بروفايل للمستخدم",
+      "path": "/api/canvas/profile?username=&avatar=&bio="
+    },
+    {
+      "name": "Rank ",
+      "desc": "كارت رانك XP",
+      "path": "/api/canvas/rank?username=&avatar=&level=&xp="
+    },
+    {
+      "name": " Level ",
+      "desc": "كارت ليفل",
+      "path": "/api/canvas/level?username=&avatar=&level=&xp="
+    }
+  ]
+},
+    {
+      "name": "Islami",
+      "items": [
+        {
+          "name": "『 Ahades ",
+          "desc": "يبحث عن أحاديث دينيه",
+          "path": "/api/ahades"
+        }
+      ]
+    },
+    {
+      "name": "Tools",
+      "items": [
+        {
+          "name": "Edit-Img ",
+          "desc": "حط لينك الصوره و البرومت",
+          "path": "/api/nano?imageUrl=&prompt="
+        },
+                {
+          "name": "Weather ",
+          "desc": "اكتب اسم المدينه عشان تعرف الطقس فيها",
+          "path": "/tools/weather?q="
+        },
+        {
+          "name": "Hologram ",
+          "desc": "يحول الصور الي مجسم",
+          "path": "/api/aimirror?url="
+        },
+{
+  "name": "Noise Remove ",
+  "desc": "تنقية الصوت من الضوضاء عبر رابط مباشر",
+  "path": "/api/noise?media="
+},
+{
+  "name": "BG Remover ",
+  "desc": "ازاله-الخلفيات",
+  "path": "/api/remove-bg?url="
+},
+{
+  "name": "Short URl ",
+  "desc": "اختصار الروابط",
+  "path": "/api/shortlink?url="
+},
+        {
+          "name": "Screen Web ",
+          "desc": "اسكرين شوت لاي ويب سايت",
+          "path": "/tools/screen?url="
+        }
+      ]
+    },
+    {
+  "name": "Anime Mods",
+  "items": [
+  { "name": "Akira ", "mode": "akira", "desc": "صور Akira عشوائية", "path": "/api/anime/akira" },
+  { "name": "Akiyama ", "mode": "akiyama", "desc": "صور Akiyama عشوائية", "path": "/api/anime/akiyama" },
+  { "name": "Anna ", "mode": "anna", "desc": "صور Anna عشوائية", "path": "/api/anime/anna" },
+  { "name": "Asuna ", "mode": "asuna", "desc": "صور Asuna عشوائية", "path": "/api/anime/asuna" },
+  { "name": "Ayuzawa ", "mode": "ayuzawa", "desc": "صور Ayuzawa عشوائية", "path": "/api/anime/ayuzawa" },
+
+  { "name": "Brouto ", "mode": "brouto", "desc": "صور Brouto عشوائية", "path": "/api/anime/brouto" },
+  { "name": "Chiho ", "mode": "chiho", "desc": "صور Chiho عشوائية", "path": "/api/anime/chiho" },
+  { "name": "Chitoge ", "mode": "chitoge", "desc": "صور Chitoge عشوائية", "path": "/api/anime/chitoge" },
+  { "name": "Deidara ", "mode": "deidara", "desc": "صور Deidara عشوائية", "path": "/api/anime/deidara" },
+  { "name": "Erza ", "mode": "erza", "desc": "صور Erza عشوائية", "path": "/api/anime/erza" },
+
+  { "name": "Elaina ", "mode": "elaina", "desc": "صور Elaina عشوائية", "path": "/api/anime/elaina" },
+  { "name": "Eba ", "mode": "eba", "desc": "صور Eba عشوائية", "path": "/api/anime/eba" },
+  { "name": "Emilia ", "mode": "emilia", "desc": "صور Emilia عشوائية", "path": "/api/anime/emilia" },
+  { "name": "Hestia ", "mode": "hestia", "desc": "صور Hestia عشوائية", "path": "/api/anime/hestia" },
+  { "name": "Hinata ", "mode": "hinata", "desc": "صور Hinata عشوائية", "path": "/api/anime/hinata" },
+
+  { "name": "Inori ", "mode": "inori", "desc": "صور Inori عشوائية", "path": "/api/anime/inori" },
+  { "name": "Isuzu ", "mode": "isuzu", "desc": "صور Isuzu عشوائية", "path": "/api/anime/isuzu" },
+  { "name": "Itachi ", "mode": "itachi", "desc": "صور Itachi عشوائية", "path": "/api/anime/itachi" },
+  { "name": "Itori ", "mode": "itori", "desc": "صور Itori عشوائية", "path": "/api/anime/itori" },
+  { "name": "Kaga ", "mode": "kaga", "desc": "صور Kaga عشوائية", "path": "/api/anime/kaga" },
+
+  { "name": "Kagura ", "mode": "kagura", "desc": "صور Kagura عشوائية", "path": "/api/anime/kagura" },
+  { "name": "Kaori ", "mode": "kaori", "desc": "صور Kaori عشوائية", "path": "/api/anime/kaori" },
+  { "name": "Keneki ", "mode": "keneki", "desc": "صور Keneki عشوائية", "path": "/api/anime/keneki" },
+  { "name": "Kotori ", "mode": "kotori", "desc": "صور Kotori عشوائية", "path": "/api/anime/kotori" },
+  { "name": "Gojo ", "mode": "جوزو", "desc": "صور Gojo عشوائية", "path": "/api/anime/جوزو" },
+
+  { "name": "Madara ", "mode": "madara", "desc": "صور Madara عشوائية", "path": "/api/anime/madara" },
+  { "name": "Mikasa ", "mode": "mikasa", "desc": "صور Mikasa عشوائية", "path": "/api/anime/mikasa" },
+  { "name": "Miku ", "mode": "miku", "desc": "صور Miku عشوائية", "path": "/api/anime/miku" },
+  { "name": "Minato ", "mode": "minato", "desc": "صور Minato عشوائية", "path": "/api/anime/minato" },
+  { "name": "Naruto ", "mode": "naruto", "desc": "صور Naruto عشوائية", "path": "/api/anime/naruto" },
+
+  { "name": "Nezuko ", "mode": "nezuko", "desc": "صور Nezuko عشوائية", "path": "/api/anime/nezuko" },
+  { "name": "Sagiri ", "mode": "sagiri", "desc": "صور Sagiri عشوائية", "path": "/api/anime/sagiri" },
+  { "name": "Sasuke ", "mode": "sasuke", "desc": "صور Sasuke عشوائية", "path": "/api/anime/sasuke" },
+  { "name": "Sakura ", "mode": "sakura", "desc": "صور Sakura عشوائية", "path": "/api/anime/sakura" },
+  { "name": "Cosplay ", "mode": "cosplay", "desc": "صور Cosplay عشوائية", "path": "/api/anime/cosplay" },
+
+  { "name": "Screen Web ", "desc": "اسكرين شوت لاي ويب سايت", "path": "/tools/screen?url=" }
+]
+},
+    {
+      "name": "Search Tools",
+      "items": [
+        {
+          "name": "YouTube ",
+          "desc": "بحث يوتيوب",
+          "path": "/search/youtube?q="
+        },
+        {
+          "name": "Tiktok Search ",
+          "desc": "تحميل تيك » posts, reels, photos",
+          "path": "/api/tiks?text="
+        },
+        {
+          "name": "Github ",
+          "desc": "بحث في سيرش جيتهاب",
+          "path": "/search/github?query="
+        },
+        {
+          "name": "SoundCloud ",
+          "desc": "بحث في اغاني ساوند كلاود",
+          "path": "/api/s/soundcloud?query="
+        },
+        {
+          "name": "Appel music ",
+          "desc": "بحث في ابل ميوزك",
+          "path": "/api/applemusic?query="
+        },
+        {
+          "name": "Lyrics ",
+          "desc": "بحث عن كلمات مقاطع",
+          "path": "/search/lyrics?title="
+        }
+      ]
+    },
+    
+    {
+      "name": "Info",
+      "items": [
+        {
+          "name": "Jadwal tv",
+          "desc": "Cari Jadwal Tv",
+          "path": "/info/jadwaltv?channel="
+        },
+        {
+          "name": "Jadwal Bola",
+          "desc": "Info Tentang Bola",
+          "path": "/info/bola"
+        }
+      ]
+    },
+    {
+      "name": "Status",
+      "items": [
+        {
+          "name": "Info status",
+          "desc": "Cek status api",
+          "path": "/api/status"
+        }
+      ]
+    }
+  ],
+  "maintenance": {
+    "enabled": false
+  }
+}
